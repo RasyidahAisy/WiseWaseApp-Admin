@@ -1,4 +1,4 @@
-package com.example.arjunalaundry_admin;
+package com.wash.ajunalaundry_admin;
 
 import org.junit.Test;
 
