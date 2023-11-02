@@ -1,16 +1,20 @@
 package com.wash.ajunalaundry_admin.dialog
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import com.wash.ajunalaundry_admin.model.PesananModels
+import com.wash.ajunalaundry_admin.model.ProgressModels
 import com.wash.arjunalaundry_admin.R
 import com.wash.arjunalaundry_admin.databinding.FragmentTerimaPesananOrderBinding
 import org.osmdroid.config.Configuration
@@ -19,6 +23,7 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.BoundingBox
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -77,7 +82,11 @@ class TerimaPesananOrderFragement : DialogFragment() {
                         startMarker.setOnMarkerClickListener { marker, _ ->
                             when (marker) {
                                 startMarker -> {Log.d("TAG", "onCreateView: ")
-
+                                    val intent = Intent(
+                                        Intent.ACTION_VIEW,
+                                        Uri.parse("geo:<${geoPoint.latitude}>,<${geoPoint.longitude}>?q=<${geoPoint.latitude}>,<${geoPoint.longitude}>(Lokasi Pelanggan)")
+                                    )
+                                    startActivity(intent)
                                 true}
 
                                 else -> {false}
@@ -101,6 +110,26 @@ class TerimaPesananOrderFragement : DialogFragment() {
         binding.toolbar.setNavigationOnClickListener {
             dismiss();
 
+        }
+
+        binding.button2.setOnClickListener {
+            val progressModels = ProgressModels(Timestamp.now(),"Pesanan Dibatalkan")
+            val batalkanPesanan = db.collection("ListPesanan").document(param1.toString()).collection("progress")
+            batalkanPesanan.add(progressModels).addOnSuccessListener {
+                Toast.makeText(activity, "Anda Membatalkan Pesanan", Toast.LENGTH_SHORT).show()
+            }
+            val ubahStatus = db.collection("ListPesanan").document(param1.toString())
+            ubahStatus.update("orderStatus","Dibatalkan")
+        }
+
+        binding.button3.setOnClickListener {
+            val progressModels = ProgressModels(Timestamp.now(),"Pesanan Diterima")
+            val terimapesanan = db.collection("ListPesanan").document(param1.toString()).collection("progress")
+            terimapesanan.add(progressModels).addOnSuccessListener {
+                Toast.makeText(activity, "Anda Menerima Pesanan", Toast.LENGTH_SHORT).show()
+            }
+            val ubahStatus = db.collection("ListPesanan").document(param1.toString())
+            ubahStatus.update("orderStatus","Pesanan Diterima")
         }
         return binding.root
     }
