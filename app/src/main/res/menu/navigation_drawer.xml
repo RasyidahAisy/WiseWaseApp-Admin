@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/main_item"
+        android:title="@string/pelanyanan" >
+        <menu
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <item
+                android:id="@+id/jenis_pesanan"
+                android:icon="@drawable/services"
+                android:title="Jenis Pesanan"
+                android:checkable="true" />
+            <item
+                android:id="@+id/voucher"
+                android:icon="@drawable/voucher"
+                android:title="Voucher"
+                android:checkable="true"/>
+        </menu>
+    </item>
+</menu>
