@@ -40,7 +40,7 @@ class PesananAdapter(options: FirestoreRecyclerOptions<PesananModels>,fragmentMa
             }
 
             when (model.orderStatus){
-                "Order Create" -> binding.cvListItemHome.setOnClickListener {
+                "Pesanan Dibuat" -> binding.cvListItemHome.setOnClickListener {
                     model.DocID?.let { it1 -> TerimaPesananOrderFragement.newInstance(it1,"").show(fM,"SeeOrder") }
                 }
 

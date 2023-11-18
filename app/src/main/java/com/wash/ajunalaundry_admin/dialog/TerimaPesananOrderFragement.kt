@@ -78,6 +78,11 @@ class TerimaPesananOrderFragement : DialogFragment() {
                         val position = org.osmdroid.util.GeoPoint(geoPoint.latitude, geoPoint.longitude)
 
                         val startMarker = Marker(binding.mapView)
+                        startMarker.position = position
+                        startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+                        binding.mapView.overlays.add(startMarker);
+                        mapController.setZoom(15.0)
+                        mapController.setCenter(position)
 
                         startMarker.setOnMarkerClickListener { marker, _ ->
                             when (marker) {
@@ -93,11 +98,7 @@ class TerimaPesananOrderFragement : DialogFragment() {
                             }
                         }
 
-                        startMarker.position = position
-                        startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-                        binding.mapView.overlays.add(startMarker);
-                        mapController.setZoom(15.0)
-                        mapController.setCenter(position)
+
                     }
                 }
                 val getType = db.collection("JenisPesanan").document(list.getString("orderType").toString())
@@ -117,9 +118,11 @@ class TerimaPesananOrderFragement : DialogFragment() {
             val batalkanPesanan = db.collection("ListPesanan").document(param1.toString()).collection("progress")
             batalkanPesanan.add(progressModels).addOnSuccessListener {
                 Toast.makeText(activity, "Anda Membatalkan Pesanan", Toast.LENGTH_SHORT).show()
+                dismiss()
             }
             val ubahStatus = db.collection("ListPesanan").document(param1.toString())
             ubahStatus.update("orderStatus","Dibatalkan")
+
         }
 
         binding.button3.setOnClickListener {
@@ -127,9 +130,11 @@ class TerimaPesananOrderFragement : DialogFragment() {
             val terimapesanan = db.collection("ListPesanan").document(param1.toString()).collection("progress")
             terimapesanan.add(progressModels).addOnSuccessListener {
                 Toast.makeText(activity, "Anda Menerima Pesanan", Toast.LENGTH_SHORT).show()
+                dismiss()
             }
             val ubahStatus = db.collection("ListPesanan").document(param1.toString())
             ubahStatus.update("orderStatus","Pesanan Diterima")
+
         }
         return binding.root
     }
