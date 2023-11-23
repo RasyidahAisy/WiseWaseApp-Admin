@@ -7,6 +7,7 @@ import com.wash.ajunalaundry_admin.fragment.PesananFragment
 import com.wash.ajunalaundry_admin.viewpager.MainPagerActivity
 import com.google.android.material.navigation.NavigationBarView
 import com.google.firebase.FirebaseApp
+import com.wash.ajunalaundry_admin.fragment.RiwayatFragment
 import com.wash.arjunalaundry_admin.R
 import com.wash.arjunalaundry_admin.databinding.ActivityMainBinding
 
@@ -51,12 +52,28 @@ class MainActivity : AppCompatActivity() {
 
         // add Fragments in your ViewPagerFragmentAdapter class
         myAdapter.addFragment(PesananFragment())
+        myAdapter.addFragment(RiwayatFragment())
 
         binding.vpMain.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
         binding.vpMain.adapter = myAdapter
 
         binding.btnNavigation.setOnItemSelectedListener(mOnNavigationItemSelectedListener)
+
+
+
+        binding.vpMain.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                when (position) {
+                    0 -> binding.btnNavigation.menu.findItem(R.id.pesanan).isChecked = true
+                    1 -> binding.btnNavigation.menu.findItem(R.id.riwayat).isChecked = true
+                    2 -> binding.btnNavigation.menu.findItem(R.id.penjualan).isChecked = true
+                    3 -> binding.btnNavigation.menu.findItem(R.id.pengguna).isChecked = true
+                }
+
+            }
+        })
 
     }
 }

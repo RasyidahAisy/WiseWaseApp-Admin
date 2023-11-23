@@ -22,6 +22,7 @@ class PesananAdapter(options: FirestoreRecyclerOptions<PesananModels>,fragmentMa
     class ViewHolder(val binding: ListItemHomeBinding): RecyclerView.ViewHolder(binding.root)
 
     val fM = fragmentManager
+    var harga = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
  return ViewHolder(ListItemHomeBinding.inflate(LayoutInflater.from(parent.context),parent,false))
@@ -36,7 +37,9 @@ class PesananAdapter(options: FirestoreRecyclerOptions<PesananModels>,fragmentMa
             task?.addOnSuccessListener { document ->
                 // Get the document data
                 binding.txtpesanan.text = document.getString("Jenis")
+                harga = Integer.parseInt(document.get("HargaPerKilo").toString())
                 // Do something with the document data
+                
             }
 
             when (model.orderStatus){
@@ -44,10 +47,15 @@ class PesananAdapter(options: FirestoreRecyclerOptions<PesananModels>,fragmentMa
                     model.DocID?.let { it1 -> TerimaPesananOrderFragement.newInstance(it1,"").show(fM,"SeeOrder") }
                 }
 
+                "Pesanan Dibuat Dengan Voucher" ->binding.cvListItemHome.setOnClickListener {
+                    model.DocID?.let { it1 -> TerimaPesananOrderFragement.newInstance(it1,"").show(fM,"SeeOrder") }
+                }
+
                 else -> {
                     binding.cvListItemHome.setOnClickListener {
                         val intent = Intent(itemView.context,UpdatePesananActivity::class.java)
                         intent.putExtra("DocID",model.DocID)
+                        intent.putExtra("HargaPerKilo",harga)
                         ContextCompat.startActivity(itemView.context,intent,null)}
                     }
             }
