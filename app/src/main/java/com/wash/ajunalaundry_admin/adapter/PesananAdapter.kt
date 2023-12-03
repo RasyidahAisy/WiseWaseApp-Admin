@@ -17,7 +17,7 @@ import com.wash.arjunalaundry_admin.databinding.ListItemHomeBinding
 import com.wash.arjunalaundry_admin.databinding.ListPesananItemBinding
 
 
-class PesananAdapter(options: FirestoreRecyclerOptions<PesananModels>,fragmentManager: FragmentManager):
+    class PesananAdapter(options: FirestoreRecyclerOptions<PesananModels>,fragmentManager: FragmentManager):
     FirestoreRecyclerAdapter<PesananModels, PesananAdapter.ViewHolder>(options) {
     class ViewHolder(val binding: ListItemHomeBinding): RecyclerView.ViewHolder(binding.root)
 
@@ -36,8 +36,8 @@ class PesananAdapter(options: FirestoreRecyclerOptions<PesananModels>,fragmentMa
             val task = documentReference?.get()
             task?.addOnSuccessListener { document ->
                 // Get the document data
-                binding.txtpesanan.text = document.getString("Jenis")
-                harga = Integer.parseInt(document.get("HargaPerKilo").toString())
+                binding.txtpesanan.text = document.getString("jenis")
+                harga = Integer.parseInt(document.get("hargaPerKilo").toString())
                 // Do something with the document data
                 
             }
@@ -55,7 +55,7 @@ class PesananAdapter(options: FirestoreRecyclerOptions<PesananModels>,fragmentMa
                     binding.cvListItemHome.setOnClickListener {
                         val intent = Intent(itemView.context,UpdatePesananActivity::class.java)
                         intent.putExtra("DocID",model.DocID)
-                        intent.putExtra("HargaPerKilo",harga)
+                        intent.putExtra("hargaPerKilo",harga)
                         ContextCompat.startActivity(itemView.context,intent,null)}
                     }
             }

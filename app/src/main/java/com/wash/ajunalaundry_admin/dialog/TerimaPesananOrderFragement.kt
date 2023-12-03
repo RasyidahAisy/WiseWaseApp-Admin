@@ -103,7 +103,7 @@ class TerimaPesananOrderFragement : DialogFragment() {
                 }
                 val getType = db.collection("JenisPesanan").document(list.getString("orderType").toString())
                getType.get().addOnSuccessListener {
-                   binding.textView13.text = it.getString("Jenis").toString()
+                   binding.textView13.text = it.getString("jenis").toString()
                }
             }
         }

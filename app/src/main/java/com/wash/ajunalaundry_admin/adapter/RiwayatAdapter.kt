@@ -35,7 +35,7 @@ class RiwayatAdapter(option: FirestoreRecyclerOptions<PesananModels>):
             val task = documentReference?.get()
             task?.addOnSuccessListener { document ->
                 // Get the document data
-                binding.textView56.text = document.getString("Jenis")
+                binding.textView56.text = document.getString("jenis")
                 // Do something with the document data
             }
 

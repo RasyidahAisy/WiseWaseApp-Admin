@@ -1,0 +1,82 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    tools:context="com.wash.ajunalaundry_admin.dialog.EditJenisPesanan">
+
+    <TextView
+        android:id="@+id/textView28"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nama Jenis" />
+
+    <EditText
+        android:id="@+id/editTextText2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView28"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:ems="10"
+        android:hint="Estimasi"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/textView30"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextText2"
+        android:text="Harga Per Kilo" />
+
+    <EditText
+        android:id="@+id/editTextText3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView30"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:ems="10"
+        android:hint="Harga Per Kilo"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/textView31"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextText3"
+        android:text="Estimasi" />
+
+    <EditText
+        android:id="@+id/editTextText4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView31"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:ems="10"
+        android:hint="Estimasi"
+        android:inputType="text" />
+
+    <Button
+        android:id="@+id/button"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextText4"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="8dp"
+        android:text="Simpan"
+        android:textColor="@color/navy" />
+
+    <Button
+        android:id="@+id/button5"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/button"
+        android:layout_toStartOf="@+id/button"
+        android:text="Cancel"
+        android:textColor="#E91E63" />
+
+</RelativeLayout>

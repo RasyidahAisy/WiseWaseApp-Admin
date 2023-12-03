@@ -60,9 +60,9 @@ class UpdatePesananActivity : AppCompatActivity() {
             val getDetailPesanan =
                 db.collection("JenisPesanan").document(it.getString("orderType").toString())
             getDetailPesanan.get().addOnSuccessListener { orderType ->
-                binding.textView19.text = orderType.getString("Jenis")
-                binding.textView20.text = orderType.get("HargaPerKilo").toString()
-                harga = Integer.parseInt(orderType.get("HargaPerKilo").toString())
+                binding.textView19.text = orderType.getString("jenis")
+                binding.textView20.text = orderType.get("hargaPerKilo").toString()
+                harga = Integer.parseInt(orderType.get("hargaPerKilo").toString())
 
                 binding.progressBar3.visibility = View.GONE;
                 window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);

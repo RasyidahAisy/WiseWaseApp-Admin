@@ -1,5 +1,6 @@
 package com.wash.ajunalaundry_admin
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
@@ -7,6 +8,7 @@ import com.wash.ajunalaundry_admin.fragment.PesananFragment
 import com.wash.ajunalaundry_admin.viewpager.MainPagerActivity
 import com.google.android.material.navigation.NavigationBarView
 import com.google.firebase.FirebaseApp
+import com.wash.ajunalaundry_admin.fragment.PenjualanFragment
 import com.wash.ajunalaundry_admin.fragment.RiwayatFragment
 import com.wash.arjunalaundry_admin.R
 import com.wash.arjunalaundry_admin.databinding.ActivityMainBinding
@@ -29,10 +31,6 @@ class MainActivity : AppCompatActivity() {
                 binding.vpMain.currentItem = 2
                 return@OnItemSelectedListener true
             }
-            R.id.pengguna -> {
-                binding.vpMain.currentItem = 3
-                return@OnItemSelectedListener true
-            }
             else -> {binding.vpMain.currentItem = 0
                 return@OnItemSelectedListener true}
         }
@@ -46,6 +44,17 @@ class MainActivity : AppCompatActivity() {
             binding.drawerLayout.open()
         }
 
+        binding.navView.setNavigationItemSelectedListener {
+            when (it.itemId){
+                R.id.jenis_pesanan -> {
+                    startActivity(Intent(this,JenisPesananActivity::class.java))
+                    false
+                }
+
+                else -> false
+            }
+        }
+
         myAdapter = MainPagerActivity(supportFragmentManager,lifecycle)
 
         // add Fragments in your ViewPagerFragmentAdapter class
@@ -53,6 +62,7 @@ class MainActivity : AppCompatActivity() {
         // add Fragments in your ViewPagerFragmentAdapter class
         myAdapter.addFragment(PesananFragment())
         myAdapter.addFragment(RiwayatFragment())
+        myAdapter.addFragment(PenjualanFragment())
 
         binding.vpMain.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
@@ -69,7 +79,6 @@ class MainActivity : AppCompatActivity() {
                     0 -> binding.btnNavigation.menu.findItem(R.id.pesanan).isChecked = true
                     1 -> binding.btnNavigation.menu.findItem(R.id.riwayat).isChecked = true
                     2 -> binding.btnNavigation.menu.findItem(R.id.penjualan).isChecked = true
-                    3 -> binding.btnNavigation.menu.findItem(R.id.pengguna).isChecked = true
                 }
 
             }

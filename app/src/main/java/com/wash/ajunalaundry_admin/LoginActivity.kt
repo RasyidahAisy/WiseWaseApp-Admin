@@ -88,7 +88,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun checkAdmin(uid:String):Boolean{
-        var kondisi = false
+        var kondisi:Boolean = true
         val db = FirebaseFirestore.getInstance()
         val checkUser = db.collection("UserAdmin").document(uid)
         checkUser.get()
