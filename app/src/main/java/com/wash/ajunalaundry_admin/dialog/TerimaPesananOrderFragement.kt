@@ -121,7 +121,7 @@ class TerimaPesananOrderFragement : DialogFragment() {
                 dismiss()
             }
             val ubahStatus = db.collection("ListPesanan").document(param1.toString())
-            ubahStatus.update("orderStatus","Dibatalkan")
+            ubahStatus.update("orderStatus","Pesanan Dibatalkan")
 
         }
 
