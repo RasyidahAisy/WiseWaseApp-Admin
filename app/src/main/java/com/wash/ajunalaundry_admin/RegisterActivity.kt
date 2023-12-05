@@ -2,6 +2,7 @@ package com.wash.ajunalaundry_admin
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
@@ -26,6 +27,13 @@ class RegisterActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
         val db = Firebase.firestore
+
+        binding.checkBox3.setOnCheckedChangeListener { _, isChecked -> // If the checkbox is checked, show the password.
+            // Otherwise, hide the password.
+            binding.txtPassword.transformationMethod =
+                if (isChecked) null else PasswordTransformationMethod.getInstance()
+            binding.txtPassword.clearFocus()
+        }
 
 
         binding.btnRegister.setOnClickListener {

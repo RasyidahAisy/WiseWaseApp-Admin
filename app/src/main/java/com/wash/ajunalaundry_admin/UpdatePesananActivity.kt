@@ -44,6 +44,12 @@ class UpdatePesananActivity : AppCompatActivity() {
                 binding.editTextText.keyListener = null
                 binding.textView26.text = it.get("orderTotal").toString().toDouble().toString()
             }
+            if (it.getBoolean("useVoucher") == true){
+                binding.textView32.text = "Iya"
+            }else{
+                binding.textView32.text = "Tidak"
+            }
+
             val timestamp: Timestamp = it.get("orderDate") as Timestamp
             val date = timestamp.toDate()
             if (it.get("qty") == 0) {
@@ -91,11 +97,19 @@ class UpdatePesananActivity : AppCompatActivity() {
 
                     "Selesai" -> {
 
-                        if (binding.editTextText.text.isEmpty()) {
+                        if (binding.editTextText.text.isEmpty() || binding.editTextText.text.equals("0")) {
                             Toast.makeText(this, "Masukkan Berat Pakaian ", Toast.LENGTH_SHORT)
                                 .show()
                             return@setOnClickListener
                         }
+
+                        if (binding.textView32.text.equals("Iya")){
+                            if (binding.editTextText.text.toString().toDouble() > 3){
+                                Toast.makeText(this, "Pesanan Voucher Maksimal 3 Kg", Toast.LENGTH_SHORT).show()
+                                return@setOnClickListener
+                            }
+                        }
+
                         val progressModels = ProgressModels(Timestamp.now(), "Pesanan Selesai")
                         val terimapesanan = db.collection("ListPesanan")
                             .document(binding.textView14.text.toString()).collection("progress")
@@ -139,6 +153,13 @@ class UpdatePesananActivity : AppCompatActivity() {
                             }
                         }
                     }
+                    "Hapus" -> {
+                        db.collection("ListPesanan").document(binding.textView14.text.toString())
+                            .delete()
+                            .addOnSuccessListener {
+                                Toast.makeText(this, "Pesanan Berhasil Dihapus", Toast.LENGTH_SHORT).show()
+                            finish()}
+                    }
                 }
             }
 
@@ -151,6 +172,7 @@ class UpdatePesananActivity : AppCompatActivity() {
                     binding.button4.isEnabled = false
                     binding.button4.text = "Antar"
                 }
+                "Pesanan Dibatalkan" -> binding.button4.text = "Hapus"
 
                 else -> binding.button4.text = "Antar"
             }
