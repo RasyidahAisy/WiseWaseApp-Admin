@@ -58,7 +58,7 @@ class RegisterActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            binding.progressBar2.visibility = View.VISIBLE;
+            binding.progressBar2.visibility = View.VISIBLE
             binding.txtNama.clearFocus()
             binding.txtNomerTelepon.clearFocus()
             binding.txtEmail.clearFocus()
@@ -85,14 +85,14 @@ class RegisterActivity : AppCompatActivity() {
                         ?.addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully written!") }
                         ?.addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
                     Toast.makeText(this, "Berhasil Registrasi", Toast.LENGTH_SHORT).show()
-                    binding.progressBar2.visibility = View.GONE;
-                    window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                    startActivity(Intent(this,MainActivity::class.java))
+                    binding.progressBar2.visibility = View.GONE
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                    auth.signOut()
                     finish()
                 }
                 .addOnFailureListener {
-                    binding.progressBar2.visibility = View.GONE;
-                    window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                    binding.progressBar2.visibility = View.GONE
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                     Log.w(this.toString(), "onCreate: Gagal", it)
                 }
 

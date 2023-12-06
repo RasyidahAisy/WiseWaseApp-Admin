@@ -23,7 +23,7 @@ class UpdatePesananActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityUpdatePesananBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.progressBar3.visibility = View.VISIBLE;
+        binding.progressBar3.visibility = View.VISIBLE
         window.setFlags(
             WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
             WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
@@ -70,8 +70,8 @@ class UpdatePesananActivity : AppCompatActivity() {
                 binding.textView20.text = orderType.get("hargaPerKilo").toString()
                 harga = Integer.parseInt(orderType.get("hargaPerKilo").toString())
 
-                binding.progressBar3.visibility = View.GONE;
-                window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                binding.progressBar3.visibility = View.GONE
+                window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
             }
 
             binding.textView17.text = formatter(date)
@@ -185,7 +185,7 @@ class UpdatePesananActivity : AppCompatActivity() {
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if (binding.editTextText.length() != 0) {
-                    binding.textView26.text = "Total";
+                    binding.textView26.text = "Total"
                 }
             }
 

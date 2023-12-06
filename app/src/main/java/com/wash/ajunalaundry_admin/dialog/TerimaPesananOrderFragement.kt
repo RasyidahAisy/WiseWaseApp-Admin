@@ -46,7 +46,7 @@ class TerimaPesananOrderFragement : DialogFragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-        setStyle(STYLE_NORMAL, R.style.AppTheme_FullScreenDialog);
+        setStyle(STYLE_NORMAL, R.style.AppTheme_FullScreenDialog)
     }
     lateinit var binding: FragmentTerimaPesananOrderBinding
     override fun onCreateView(
@@ -79,8 +79,8 @@ class TerimaPesananOrderFragement : DialogFragment() {
 
                         val startMarker = Marker(binding.mapView)
                         startMarker.position = position
-                        startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-                        binding.mapView.overlays.add(startMarker);
+                        startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+                        binding.mapView.overlays.add(startMarker)
                         mapController.setZoom(15.0)
                         mapController.setCenter(position)
 
@@ -109,7 +109,7 @@ class TerimaPesananOrderFragement : DialogFragment() {
         }
 
         binding.toolbar.setNavigationOnClickListener {
-            dismiss();
+            dismiss()
 
         }
 

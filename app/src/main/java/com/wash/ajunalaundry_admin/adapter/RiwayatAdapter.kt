@@ -19,9 +19,7 @@ import java.util.Date
 
 class RiwayatAdapter(option: FirestoreRecyclerOptions<PesananModels>):
     FirestoreRecyclerAdapter<PesananModels, RiwayatAdapter.ViewHolder>(option) {
-   inner class ViewHolder(val binding: RiwayatPemesananListBinding): RecyclerView.ViewHolder(binding.root) {
-
-    }
+   inner class ViewHolder(val binding: RiwayatPemesananListBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(RiwayatPemesananListBinding.inflate(LayoutInflater.from(parent.context),parent,false))

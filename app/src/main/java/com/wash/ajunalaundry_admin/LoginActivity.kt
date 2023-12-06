@@ -40,7 +40,7 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "Masukkan Password Anda", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            binding.progressBar.visibility = View.VISIBLE;
+            binding.progressBar.visibility = View.VISIBLE
             binding.txtEmailLogin.clearFocus()
             binding.txtEmailLogin.clearFocus()
             window.setFlags(
@@ -61,13 +61,13 @@ class LoginActivity : AppCompatActivity() {
                                 Log.d(this.toString(), "signInWithEmail:success")
                                 startActivity(Intent(this, MainActivity::class.java))
                                 finish()
-                                binding.progressBar.visibility = View.GONE;
-                                window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                                binding.progressBar.visibility = View.GONE
+                                window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                             } else {
                                 Toast.makeText(this, "Anda Bukan Admin", Toast.LENGTH_SHORT).show()
-                                binding.progressBar.visibility = View.GONE;
+                                binding.progressBar.visibility = View.GONE
                                 auth.signOut()
-                                window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                                window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                             }
                             Log.d("Login", "onCreate: Ada Data")
                         }
@@ -81,8 +81,8 @@ class LoginActivity : AppCompatActivity() {
                         }
                 }
                 .addOnFailureListener {
-                    binding.progressBar.visibility = View.GONE;
-                    window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                    binding.progressBar.visibility = View.GONE
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                     Log.w(this.toString(), "createUserWithEmail:failure", it)
                     Toast.makeText(this, "Email Atau Password Anda Salah", Toast.LENGTH_SHORT).show()
                     auth.signOut()
