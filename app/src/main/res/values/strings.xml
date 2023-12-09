@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ArjunaLaundry-Admin</string>
+    <string name="app_name">Admin Arjuna Laundry</string>
     <string name="belummemilikiakun">Belum Memiliki Akun ?</string>
     <string name="register">Register</string>
     <string name="login">Login</string>
