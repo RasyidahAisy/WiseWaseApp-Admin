@@ -23,12 +23,13 @@ class UpdatePesananActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityUpdatePesananBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.progressBar3.visibility = View.VISIBLE;
+        binding.progressBar3.visibility = View.VISIBLE
         window.setFlags(
             WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
             WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
         )
 
+        binding.textView20.text = intent.getStringExtra("HargaPerKilo")
 
         val db = FirebaseFirestore.getInstance()
         val getData =
@@ -36,11 +37,19 @@ class UpdatePesananActivity : AppCompatActivity() {
         getData.get().addOnSuccessListener {
             binding.textView14.text = it.id
             binding.Status.text = it.getString("orderStatus")
-            if (it.getString("orderTotal") == null){
+            if (it.get("orderTotal") == null){
                 binding.textView26.text = "Total"
             }else{
-                binding.textView26.text = it.get("orderStatus").toString()
+                binding.editTextText.setText(it.get("qty").toString())
+                binding.editTextText.keyListener = null
+                binding.textView26.text = it.get("orderTotal").toString().toDouble().toString()
             }
+            if (it.getBoolean("useVoucher") == true){
+                binding.textView32.text = "Iya"
+            }else{
+                binding.textView32.text = "Tidak"
+            }
+
             val timestamp: Timestamp = it.get("orderDate") as Timestamp
             val date = timestamp.toDate()
             if (it.get("qty") == 0) {
@@ -57,13 +66,14 @@ class UpdatePesananActivity : AppCompatActivity() {
             val getDetailPesanan =
                 db.collection("JenisPesanan").document(it.getString("orderType").toString())
             getDetailPesanan.get().addOnSuccessListener { orderType ->
-                binding.textView19.text = orderType.getString("Jenis")
-                binding.textView20.text = orderType.get("HargaPerKilo").toString()
-                harga = Integer.parseInt(orderType.get("HargaPerKilo").toString())
+                binding.textView19.text = orderType.getString("jenis")
+                binding.textView20.text = orderType.get("hargaPerKilo").toString()
+                harga = Integer.parseInt(orderType.get("hargaPerKilo").toString())
 
-                binding.progressBar3.visibility = View.GONE;
-                window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                binding.progressBar3.visibility = View.GONE
+                window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
             }
+
             binding.textView17.text = formatter(date)
 
             binding.button4.setOnClickListener {
@@ -87,11 +97,19 @@ class UpdatePesananActivity : AppCompatActivity() {
 
                     "Selesai" -> {
 
-                        if (binding.editTextText.text.isEmpty()) {
+                        if (binding.editTextText.text.isEmpty() || binding.editTextText.text.equals("0")) {
                             Toast.makeText(this, "Masukkan Berat Pakaian ", Toast.LENGTH_SHORT)
                                 .show()
                             return@setOnClickListener
                         }
+
+                        if (binding.textView32.text.equals("Iya")){
+                            if (binding.editTextText.text.toString().toDouble() > 3){
+                                Toast.makeText(this, "Pesanan Voucher Maksimal 3 Kg", Toast.LENGTH_SHORT).show()
+                                return@setOnClickListener
+                            }
+                        }
+
                         val progressModels = ProgressModels(Timestamp.now(), "Pesanan Selesai")
                         val terimapesanan = db.collection("ListPesanan")
                             .document(binding.textView14.text.toString()).collection("progress")
@@ -102,7 +120,7 @@ class UpdatePesananActivity : AppCompatActivity() {
                         }
                         val ubahStatus = db.collection("ListPesanan")
                             .document(binding.textView14.text.toString())
-                        ubahStatus.update("orderStatus", "Pesanan Siap Dikirim","qty", binding.editTextText.text.toString().toDouble(),"orderTotal",)
+                        ubahStatus.update("orderStatus", "Pesanan Siap Dikirim","qty", binding.editTextText.text.toString().toDouble(),"orderTotal",binding.textView26.text.toString().toDouble())
                         finish()
                     }
 
@@ -110,10 +128,7 @@ class UpdatePesananActivity : AppCompatActivity() {
                         val cekStatus = db.collection("ListPesanan")
                             .document(binding.textView14.text.toString())
                         cekStatus.get().addOnSuccessListener { cekStatus ->
-                            if (cekStatus.getString("paymentStatus").equals("Pending")) {
-                                Toast.makeText(this, "Pesanan Belum Dibayar", Toast.LENGTH_SHORT)
-                                    .show()
-                            } else {
+                            if (cekStatus.getString("paymentStatus").equals("Success")) {
                                 val progressModels =
                                     ProgressModels(Timestamp.now(), "Pesanan Dikirim")
                                 val terimapesanan = db.collection("ListPesanan")
@@ -131,8 +146,19 @@ class UpdatePesananActivity : AppCompatActivity() {
                                     .document(binding.textView14.text.toString())
                                 ubahStatus.update("orderStatus", "Pesanan Telah Dikirim")
                                 finish()
+
+                            } else {
+                                Toast.makeText(this, "Pesanan Belum Dibayar", Toast.LENGTH_SHORT)
+                                    .show()
                             }
                         }
+                    }
+                    "Hapus" -> {
+                        db.collection("ListPesanan").document(binding.textView14.text.toString())
+                            .delete()
+                            .addOnSuccessListener {
+                                Toast.makeText(this, "Pesanan Berhasil Dihapus", Toast.LENGTH_SHORT).show()
+                            finish()}
                     }
                 }
             }
@@ -140,36 +166,39 @@ class UpdatePesananActivity : AppCompatActivity() {
             when (binding.Status.text.toString()) {
                 "Pesanan Diterima" -> binding.button4.text = "Proses"
                 "Pesanan Diproses" -> binding.button4.text = "Selesai"
-                "Pesanan Telah Diterima" -> binding.button4.text = "Selesaikan Pesanan"
+                "Pesanan Telah Selesai" -> {binding.button4.isEnabled = false
+                binding.button4.text = "Selesai"}
                 "Pesanan Telah Dikirim" -> {
                     binding.button4.isEnabled = false
                     binding.button4.text = "Antar"
                 }
+                "Pesanan Dibatalkan" -> binding.button4.text = "Hapus"
 
                 else -> binding.button4.text = "Antar"
             }
 
         }
 
-        binding.editTextText.addTextChangedListener { object : TextWatcher{
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+        binding.editTextText.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if (binding.editTextText.length() != 0) {
-                    binding.textView26.text = "Total";
-
-                }else{
-                    binding.textView26.text = (binding.editTextText.text.toString().toDouble() * Integer.parseInt(binding.textView20.text.toString())).toString()
-                    Log.d("CekHarga", "afterTextChanged: ${(binding.editTextText.text.toString().toDouble() * harga).toString()}")
-
+                    binding.textView26.text = "Total"
                 }
             }
 
             override fun afterTextChanged(p0: Editable?) {
-                binding.textView26.text = (binding.editTextText.text.toString().toDouble() * Integer.parseInt(binding.textView20.text.toString())).toString()
-                Log.d("CekHarga", "afterTextChanged: ${(binding.editTextText.text.toString().toDouble() * Integer.parseInt(binding.textView20.text.toString())).toString()}")
+                if (binding.editTextText.text.toString() == ""){
+                    binding.textView26.text = "Total"
+                }else{
+                    binding.textView26.text = ((binding.editTextText.text.toString().toDouble()) * harga).toString()
+                }
+
             }
-        } }
+
+        })
     }
 
     fun formatter(date: Date): String {

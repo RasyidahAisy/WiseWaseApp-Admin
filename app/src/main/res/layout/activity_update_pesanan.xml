@@ -201,6 +201,23 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/textView29"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/textView20"
+                        android:layout_alignEnd="@+id/textView17"
+                        android:text="Voucher" />
+
+                    <TextView
+                        android:id="@+id/textView32"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textView29"
+                        android:layout_alignStart="@+id/textView29"
+                        android:layout_alignEnd="@+id/textView29"
+                        android:text="TextView" />
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
         </RelativeLayout>

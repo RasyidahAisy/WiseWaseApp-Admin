@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ArjunaLaundry-Admin</string>
+    <string name="app_name">Admin Arjuna Laundry</string>
     <string name="belummemilikiakun">Belum Memiliki Akun ?</string>
     <string name="register">Register</string>
     <string name="login">Login</string>
@@ -10,7 +10,7 @@
     <string name="nama">Nama</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="pelanyanan">Pelanyanan</string>
+    <string name="pelanyanan">Pelayanan</string>
 
 
     <string-array name="status">

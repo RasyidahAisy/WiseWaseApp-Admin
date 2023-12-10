@@ -17,19 +17,36 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ArjunaLaundryAdmin"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name="com.wash.ajunalaundry_admin.ForgetPasswordActivity"
+            android:exported="false"
+            android:label="Lupa Kata Sandi"
+            android:parentActivityName="com.wash.ajunalaundry_admin.LoginActivity"/>
+        <activity
+            android:name="com.wash.ajunalaundry_admin.ChangePasswordActivity"
+            android:exported="false"
+            android:label="Ganti Password"
+            android:parentActivityName="com.wash.ajunalaundry_admin.MainActivity" />
+        <activity
+            android:name="com.wash.ajunalaundry_admin.JenisPesananActivity"
+            android:exported="false"
+            android:label="Jenis Pesanan"
+            android:parentActivityName="com.wash.ajunalaundry_admin.MainActivity" />
+        <activity
             android:name="com.wash.ajunalaundry_admin.UpdatePesananActivity"
+            android:exported="true"
             android:label="Update Pesanan"
-            android:parentActivityName="com.wash.ajunalaundry_admin.MainActivity"
-            android:exported="true" />
+            android:parentActivityName="com.wash.ajunalaundry_admin.MainActivity" />
         <activity
             android:name="com.wash.ajunalaundry_admin.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.ArjunaLaundryAdmin.NoActionBar" />
         <activity
             android:name="com.wash.ajunalaundry_admin.RegisterActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.ArjunaLaundryAdmin.NoActionBar" />
         <activity
             android:name="com.wash.ajunalaundry_admin.LoginActivity"
             android:exported="true"

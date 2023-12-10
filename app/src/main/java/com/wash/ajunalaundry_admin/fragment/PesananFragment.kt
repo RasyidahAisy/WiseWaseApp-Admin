@@ -37,7 +37,7 @@ class PesananFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentPesananBinding.inflate(inflater)
 
-        val query = FirebaseFirestore.getInstance().collection("ListPesanan").whereNotEqualTo("orderStatus","Selesai")
+        val query = FirebaseFirestore.getInstance().collection("ListPesanan").whereNotEqualTo("orderStatus","Pesanan Telah Selesai")
         val db = FirebaseFirestore.getInstance()
         val option = FirestoreRecyclerOptions.Builder<PesananModels>()
             .setQuery(query, PesananModels::class.java)

@@ -12,10 +12,21 @@
                 android:icon="@drawable/services"
                 android:title="Jenis Pesanan"
                 android:checkable="true" />
+        </menu>
+    </item>
+
+    <item
+        android:title="Akun">
+        <menu>
             <item
-                android:id="@+id/voucher"
-                android:icon="@drawable/voucher"
-                android:title="Voucher"
+                android:id="@+id/changePassword"
+                android:icon="@drawable/password"
+                android:title="Change Password"
+                android:checkable="true" />
+            <item
+                android:id="@+id/log_Out"
+                android:icon="@drawable/log_out"
+                android:title="Log Out"
                 android:checkable="true"/>
         </menu>
     </item>

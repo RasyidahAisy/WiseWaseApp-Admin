@@ -17,11 +17,12 @@ import com.wash.arjunalaundry_admin.databinding.ListItemHomeBinding
 import com.wash.arjunalaundry_admin.databinding.ListPesananItemBinding
 
 
-class PesananAdapter(options: FirestoreRecyclerOptions<PesananModels>,fragmentManager: FragmentManager):
+    class PesananAdapter(options: FirestoreRecyclerOptions<PesananModels>,fragmentManager: FragmentManager):
     FirestoreRecyclerAdapter<PesananModels, PesananAdapter.ViewHolder>(options) {
     class ViewHolder(val binding: ListItemHomeBinding): RecyclerView.ViewHolder(binding.root)
 
     val fM = fragmentManager
+    var harga = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
  return ViewHolder(ListItemHomeBinding.inflate(LayoutInflater.from(parent.context),parent,false))
@@ -35,8 +36,10 @@ class PesananAdapter(options: FirestoreRecyclerOptions<PesananModels>,fragmentMa
             val task = documentReference?.get()
             task?.addOnSuccessListener { document ->
                 // Get the document data
-                binding.txtpesanan.text = document.getString("Jenis")
+                binding.txtpesanan.text = document.getString("jenis")
+                harga = Integer.parseInt(document.get("hargaPerKilo").toString())
                 // Do something with the document data
+                
             }
 
             when (model.orderStatus){
@@ -44,10 +47,15 @@ class PesananAdapter(options: FirestoreRecyclerOptions<PesananModels>,fragmentMa
                     model.DocID?.let { it1 -> TerimaPesananOrderFragement.newInstance(it1,"").show(fM,"SeeOrder") }
                 }
 
+                "Pesanan Dibuat Dengan Voucher" ->binding.cvListItemHome.setOnClickListener {
+                    model.DocID?.let { it1 -> TerimaPesananOrderFragement.newInstance(it1,"").show(fM,"SeeOrder") }
+                }
+
                 else -> {
                     binding.cvListItemHome.setOnClickListener {
                         val intent = Intent(itemView.context,UpdatePesananActivity::class.java)
                         intent.putExtra("DocID",model.DocID)
+                        intent.putExtra("hargaPerKilo",harga)
                         ContextCompat.startActivity(itemView.context,intent,null)}
                     }
             }

@@ -10,12 +10,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
 import com.wash.arjunalaundry_admin.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
     lateinit var binding: ActivityLoginBinding
-    lateinit var auth :FirebaseAuth
+    lateinit var auth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -23,72 +22,119 @@ class LoginActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
         val db = FirebaseFirestore.getInstance()
-        
+
         binding.checkBox2.setOnCheckedChangeListener { _, isChecked -> // If the checkbox is checked, show the password.
             // Otherwise, hide the password.
-            binding.txtPasswordLogin.transformationMethod = if (isChecked) null else PasswordTransformationMethod.getInstance()
+            binding.txtPasswordLogin.transformationMethod =
+                if (isChecked) null else PasswordTransformationMethod.getInstance()
             binding.txtPasswordLogin.clearFocus()
         }
 
         binding.btnLogin.setOnClickListener {
-            if (binding.txtEmailLogin.text.isEmpty()){
+            if (binding.txtEmailLogin.text.isEmpty()) {
                 Toast.makeText(this, "Masukkan Email Anda", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            if (binding.txtPasswordLogin.text.isEmpty()){
+            if (binding.txtPasswordLogin.text.isEmpty()) {
                 Toast.makeText(this, "Masukkan Password Anda", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            binding.progressBar.visibility = View.VISIBLE;
+            binding.progressBar.visibility = View.VISIBLE
             binding.txtEmailLogin.clearFocus()
             binding.txtEmailLogin.clearFocus()
             window.setFlags(
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+            )
 
-            auth.signInWithEmailAndPassword(binding.txtEmailLogin.text.toString(),binding.txtPasswordLogin.text.toString())
+            auth.signInWithEmailAndPassword(
+                binding.txtEmailLogin.text.toString(),
+                binding.txtPasswordLogin.text.toString()
+            )
                 .addOnSuccessListener {
-                    
-                    if (checkAdmin(auth.currentUser!!.uid)){
-                        Log.d(this.toString(), "signInWithEmail:success")
-                        startActivity(Intent(this,MainActivity::class.java))
-                        finish()
-                        binding.progressBar.visibility = View.GONE;
-                        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                    }else{
-                        Toast.makeText(this, "Anda Bukan Admin", Toast.LENGTH_SHORT).show()
-                        binding.progressBar.visibility = View.GONE;
-                        auth.signOut()
-                        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                    }
+                    val checkUser =
+                        db.collection("UserAdmin").document(auth.currentUser?.uid.toString())
+                    checkUser.get()
+                        .addOnSuccessListener {
+                            if (it.getBoolean("admin") == true) {
+                                Log.d(this.toString(), "signInWithEmail:success")
+                                startActivity(Intent(this, MainActivity::class.java))
+                                finish()
+                                binding.progressBar.visibility = View.GONE
+                                window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                            } else {
+                                Toast.makeText(this, "Anda Bukan Admin", Toast.LENGTH_SHORT).show()
+                                binding.progressBar.visibility = View.GONE
+                                auth.signOut()
+                                window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                            }
+                            Log.d("Login", "onCreate: Ada Data")
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(
+                                this,
+                                "Anda Harus Login Dengan Email Admin",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            auth.signOut()
+                        }
                 }
                 .addOnFailureListener {
-                    binding.progressBar.visibility = View.GONE;
-                    window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                    binding.progressBar.visibility = View.GONE
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                     Log.w(this.toString(), "createUserWithEmail:failure", it)
                     Toast.makeText(this, "Email Atau Password Anda Salah", Toast.LENGTH_SHORT).show()
+                    auth.signOut()
                 }
+
+
+//            auth.signInWithEmailAndPassword(binding.txtEmailLogin.text.toString(),binding.txtPasswordLogin.text.toString())
+//                .addOnSuccessListener {
+//
+//                    if (checkAdmin(auth.currentUser!!.uid)){
+//                        Log.d(this.toString(), "signInWithEmail:success")
+//                        startActivity(Intent(this,MainActivity::class.java))
+//                        finish()
+//                        binding.progressBar.visibility = View.GONE;
+//                        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+//                    }else{
+//                        Toast.makeText(this, "Anda Bukan Admin", Toast.LENGTH_SHORT).show()
+//                        binding.progressBar.visibility = View.GONE;
+//                        auth.signOut()
+//                        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+//                    }
+//                }
+//                .addOnFailureListener {
+//                    binding.progressBar.visibility = View.GONE;
+//                    window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+//                    Log.w(this.toString(), "createUserWithEmail:failure", it)
+//                    Toast.makeText(this, "Email Atau Password Anda Salah", Toast.LENGTH_SHORT).show()
+//                    auth.signOut()
+//                }
 
         }
 
         binding.txtRegister.setOnClickListener {
-            startActivity(Intent(this,RegisterActivity::class.java))
-            finish()
+            startActivity(Intent(this, RegisterActivity::class.java))
+        }
+
+        binding.textView43.setOnClickListener {
+            startActivity(Intent(this,ForgetPasswordActivity::class.java))
         }
     }
 
     override fun onStart() {
         super.onStart()
         val currentUser = auth.currentUser
-        if (currentUser != null){
-            startActivity(Intent(this,MainActivity::class.java))
+        if (currentUser != null) {
+            startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
     }
 
-    fun checkAdmin(uid:String):Boolean{
-        var kondisi = false
+    fun checkAdmin(uid: String): Boolean {
+        var kondisi:Boolean = true
         val db = FirebaseFirestore.getInstance()
         val checkUser = db.collection("UserAdmin").document(uid)
         checkUser.get()
@@ -96,7 +142,7 @@ class LoginActivity : AppCompatActivity() {
                 kondisi = true
             }
             .addOnFailureListener {
-              kondisi =   false
+                kondisi = false
             }
         return kondisi
     }
